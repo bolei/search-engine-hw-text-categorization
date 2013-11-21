@@ -1,0 +1,3 @@
+train=/home/bolei/Works/data/11641-hw5/data/citeseer.train.ltc.svm
+test=/home/bolei/Works/data/11641-hw5/data/citeseer.test.ltc.svm
+c=0.001
