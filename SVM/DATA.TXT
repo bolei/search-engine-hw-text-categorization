@@ -1,0 +1,3 @@
+train=/home/bolei/Desktop/data/train.txt
+test=/home/bolei/Desktop/data/test.txt
+c=100

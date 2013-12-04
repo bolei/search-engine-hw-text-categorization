@@ -11,6 +11,11 @@ public abstract class AbstractModel {
 	protected String resultFolderNamePrefix = "prediction-";
 	protected String resultFilePrefix = "svm-prediction-class-";
 
+	/**
+	 * 
+	 * Train and test for one-VS-rest classification
+	 * 
+	 * */
 	public void trainAndTest(int numClasses, float c, PrintStream finalOut,
 			String trainFilefolder, String modelParentFolder, String testFile,
 			String resultParentFolder) throws Exception {
@@ -32,5 +37,28 @@ public abstract class AbstractModel {
 		classifier.testOneVsRest(testFile, modelFolder, modelFileNamePrefix,
 				numClasses, resultFolder, resultFilePrefix, finalOut);
 
+	}
+
+	/**
+	 * 
+	 * Train and test for binary classification
+	 * 
+	 * @throws Exception
+	 * 
+	 */
+	public void trainAndTest(float c, String trainFile, String modelFolder,
+			String testFile, String resultFolder) throws Exception {
+
+		MiscHelper.touchDir(modelFolder);
+
+		String modelFile = modelFolder + "/svm-model-" + c + ".txt";
+
+		// train the model
+		classifier.train(trainFile, modelFile, c);
+
+		// make prediction
+		MiscHelper.touchDir(resultFolder);
+		String resultFile = resultFolder + "/svm-result-" + c + ".txt";
+		classifier.classify(testFile, modelFile, resultFile);
 	}
 }

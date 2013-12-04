@@ -110,6 +110,12 @@ public class LogRegAdapter extends AbstractOneVsRestClassifierAdapter {
 	}
 
 	private HashMap<Integer, Float> getFeatureVector(String line) {
+		// remove #info
+		int tmp = line.indexOf('#');
+		if (tmp >= 0) {
+			line = line.substring(0, tmp);
+		}
+
 		String[] strArr = line.split(" ");
 		HashMap<Integer, Float> instance = new LinkedHashMap<Integer, Float>();
 		for (int i = 1; i < strArr.length; i++) {

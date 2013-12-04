@@ -4,8 +4,8 @@ import edu.cmu.lti.searchengine.hw5.AbstractModel;
 
 public class SvmModel extends AbstractModel {
 
-	public SvmModel(String svmLocation, int numFeatures) {
-		classifier = new SvmAdapter(svmLocation, numFeatures);
+	public SvmModel(String svmLocation, String[] options) {
+		classifier = new SvmAdapter(svmLocation, options);
 	}
 
 }

@@ -14,6 +14,9 @@ public abstract class AbstractOneVsRestClassifierAdapter {
 		this.numFeatures = numFeatures;
 	}
 
+	public AbstractOneVsRestClassifierAdapter() {
+	}
+
 	public void trainOneVsRest(String trainFileNamePrefix,
 			String trainFilefolder, int numClasses, String modelFileNamePrefix,
 			String modelOutFolder, float c) throws Exception {

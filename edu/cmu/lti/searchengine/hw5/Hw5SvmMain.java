@@ -14,14 +14,12 @@ public class Hw5SvmMain {
 		String trainFilefolder = "/home/bolei/Works/data/11641-hw5/data/one-vs-rest-train";
 		String modelParentFolder = "/home/bolei/Works/data/11641-hw5/data/model/svm";
 		String testFile = "/home/bolei/Works/data/11641-hw5/data/citeseer.test.ltc.svm";
-		String train = "/home/bolei/Works/data/11641-hw5/data/citeseer.train.ltc.svm";
 		String resultParentFolder = "/home/bolei/Works/data/11641-hw5/data/prediction/svm";
 
-		int numFeatures = TrainingDataPreprocessor.getNumberFeatures(train);
-
-		SvmModel mt = new SvmModel(svmLocation, numFeatures);
 		PrintStream finalOut = null;
 		for (float c : cArr) {
+			SvmModel mt = new SvmModel(svmLocation, new String[] { "-c",
+					Float.toString(c) });
 			String finalResultFile = "/home/bolei/Works/data/11641-hw5/data"
 					+ "/prediction/svm/finalResult-" + c;
 			try {
