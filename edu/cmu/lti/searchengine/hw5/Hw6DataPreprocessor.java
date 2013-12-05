@@ -1,4 +1,4 @@
-package SVM.Implementation;
+package edu.cmu.lti.searchengine.hw5;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -12,14 +12,15 @@ import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.Map.Entry;
 
-import edu.cmu.lti.searchengine.hw5.MiscHelper;
+import SVM.Implementation.Hw6SVM;
 
-public class Hw6SVMDataPreprocessor {
+
+public class Hw6DataPreprocessor {
 
 	/**
 	 * removes query id from each line
 	 * */
-	public void cleanQid(String rawTestFileName, String outTestFileName)
+	public void preprocessTest(String rawTestFileName, String outTestFileName)
 			throws IOException {
 		FileReader fr = new FileReader(rawTestFileName);
 		BufferedReader br = null;
@@ -68,7 +69,7 @@ public class Hw6SVMDataPreprocessor {
 	 * Calculate features for RankSVM
 	 * 
 	 * */
-	public void preprocess(String rawTrainingFileName,
+	public void preprocessTrain(String rawTrainingFileName,
 			String outTrainingFileName, boolean includeNeg, int negLabelVal)
 			throws IOException {
 		FileReader fr = new FileReader(rawTrainingFileName);
@@ -183,6 +184,8 @@ public class Hw6SVMDataPreprocessor {
 						v[i] = posVec[i] - negVec[i];
 					}
 					vectorVs.add(new FeatureAndLable(true, v));
+	
+					// should include negative data
 					if (includeNeg == true) {
 						v = new double[Hw6SVM.NUM_FEATURES];
 						for (int i = 0; i < Hw6SVM.NUM_FEATURES; i++) {
@@ -219,7 +222,7 @@ public class Hw6SVMDataPreprocessor {
 	public static void main(String[] args) throws IOException {
 		String inputFile = "/home/bolei/Desktop/data/tmp_train.txt";
 		String outputFile = "/home/bolei/Desktop/data/tmp.txt";
-		new Hw6SVMDataPreprocessor().preprocess(inputFile, outputFile, false,
+		new Hw6DataPreprocessor().preprocessTrain(inputFile, outputFile, false,
 				-1);
 	}
 }

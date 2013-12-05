@@ -3,6 +3,7 @@ package SVM.Implementation;
 import java.io.FileInputStream;
 import java.util.Properties;
 
+import edu.cmu.lti.searchengine.hw5.Hw6DataPreprocessor;
 import edu.cmu.lti.searchengine.hw5.MiscHelper;
 import edu.cmu.lti.searchengine.hw5.svm.SvmModel;
 
@@ -31,16 +32,21 @@ public class Hw6SVM {
 		// preprocess the raw train file, new train file goes to trainFile
 		MiscHelper.touchDir(PREPROCESS_TRAIN_FOLDER);
 		String trainFile = PREPROCESS_TRAIN_FOLDER + "/newtrain.txt";
-		Hw6SVMDataPreprocessor preprocessor = new Hw6SVMDataPreprocessor();
-		preprocessor.preprocess(rawTrainFile, trainFile, false, -1);
+		Hw6DataPreprocessor preprocessor = new Hw6DataPreprocessor();
+		preprocessor.preprocessTrain(rawTrainFile, trainFile, false, -1);
 
 		// preprocess test file, remove "qid:xxx"
 		MiscHelper.touchDir(PREPROCESS_TEST_FOLDER);
 		String testFile = PREPROCESS_TEST_FOLDER + "/newteset.txt";
-		preprocessor.cleanQid(rawTestFile, testFile);
+		preprocessor.preprocessTest(rawTestFile, testFile);
 
+		MiscHelper.touchDir(RESULT_FOLDER);
+		String resultFile = RESULT_FOLDER + "/svm-result-" + c + ".txt";
+
+		// train and test
 		SvmModel mt = new SvmModel(SVM_LOCATION, new String[] { "-c",
 				Float.toString(c), "-b", "0", "-m", "2048" });
-		mt.trainAndTest(c, trainFile, MODEL_FOLDER, testFile, RESULT_FOLDER);
+		mt.trainAndTest(c, trainFile, MODEL_FOLDER, testFile, resultFile);
+		MiscHelper.catFile(resultFile);
 	}
 }

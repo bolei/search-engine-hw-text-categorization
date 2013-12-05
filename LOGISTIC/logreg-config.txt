@@ -1,2 +1,2 @@
-epsilon=1E-1
+epsilon=1E-2
 precision=1E-4

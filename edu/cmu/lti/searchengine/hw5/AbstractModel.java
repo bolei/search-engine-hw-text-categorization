@@ -47,18 +47,19 @@ public abstract class AbstractModel {
 	 * 
 	 */
 	public void trainAndTest(float c, String trainFile, String modelFolder,
-			String testFile, String resultFolder) throws Exception {
+			String testFile, String resultFile) throws Exception {
 
 		MiscHelper.touchDir(modelFolder);
 
-		String modelFile = modelFolder + "/svm-model-" + c + ".txt";
+		String modelFile = modelFolder + "/model-" + c + ".txt";
 
+		long begin = System.currentTimeMillis();
 		// train the model
 		classifier.train(trainFile, modelFile, c);
+		long end = System.currentTimeMillis();
+		System.err.println(String.format("time spent:%d", (end - begin)));
 
 		// make prediction
-		MiscHelper.touchDir(resultFolder);
-		String resultFile = resultFolder + "/svm-result-" + c + ".txt";
 		classifier.classify(testFile, modelFile, resultFile);
 	}
 }

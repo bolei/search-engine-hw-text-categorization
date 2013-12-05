@@ -1,6 +1,9 @@
 package edu.cmu.lti.searchengine.hw5;
 
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileReader;
+import java.io.IOException;
 import java.io.PrintStream;
 import java.io.Reader;
 import java.io.Writer;
@@ -44,6 +47,21 @@ public class MiscHelper {
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
+		}
+	}
+
+	public static void catFile(String fileName) throws IOException {
+		FileReader fr = new FileReader(fileName);
+		BufferedReader br = null;
+
+		try {
+			br = new BufferedReader(fr);
+			String line;
+			while ((line = br.readLine()) != null) {
+				System.out.println(line);
+			}
+		} finally {
+			MiscHelper.closeReader(br);
 		}
 	}
 }

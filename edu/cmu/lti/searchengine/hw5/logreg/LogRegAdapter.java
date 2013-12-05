@@ -2,7 +2,6 @@ package edu.cmu.lti.searchengine.hw5.logreg;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
-import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -11,9 +10,9 @@ import java.util.LinkedHashMap;
 import java.util.Map.Entry;
 import java.util.Random;
 
+import LOGISTIC.Implementation.Hw6LogReg;
 import edu.cmu.lti.searchengine.hw5.AbstractOneVsRestClassifierAdapter;
 import edu.cmu.lti.searchengine.hw5.MiscHelper;
-import edu.cmu.lti.searchengine.hw5.TrainingDataPreprocessor;
 
 public class LogRegAdapter extends AbstractOneVsRestClassifierAdapter {
 
@@ -74,6 +73,9 @@ public class LogRegAdapter extends AbstractOneVsRestClassifierAdapter {
 			for (int i = 0; i < numInstances; i++) { // for each instance
 				// calculate gradient
 				sigmoid = getSigmoid(weightVector, allTraining.get(i));
+				if (sigmoid == 0 || sigmoid == 1) {
+					continue;
+				}
 				objective += allLabels.get(i) * Math.log(sigmoid)
 						+ (1 - allLabels.get(i)) * Math.log(1 - sigmoid);
 				for (int j = 0; j < gradientVector.length; j++) {
@@ -140,6 +142,9 @@ public class LogRegAdapter extends AbstractOneVsRestClassifierAdapter {
 		double object = 0d;
 		for (int i = 0; i < numInstances; i++) {
 			sigmoid = getSigmoid(weightVector, allTraining.get(i));
+			if (sigmoid == 0 || sigmoid == 1) {
+				continue;
+			}
 			label = allLabels.get(i);
 			object += label * Math.log(sigmoid) + (1 - label)
 					* Math.log(1 - sigmoid);
@@ -215,18 +220,13 @@ public class LogRegAdapter extends AbstractOneVsRestClassifierAdapter {
 		}
 	}
 
-	public static void main(String[] args) throws IOException {
-		String train = "/home/bolei/Works/data/11641-hw5/data/citeseer.train.ltc.svm";
-		int numFeatures = TrainingDataPreprocessor.getNumberFeatures(train);
-		LogRegAdapter lr = new LogRegAdapter(numFeatures, 1E-7, 1E-5);
-		// String line =
-		// "0 11:0.089182 35:0.047741 123:0.177033 131:0.169826 247:0.200707 326:0.245944 405:0.216393 568:0.438247 723:0.140095 1120:0.691504 1121:0.303516";
-		float[] weightVector = new float[10];
-		for (int i = 0; i < weightVector.length; i++) {
-			weightVector[i] = i;
-		}
+	public static void main(String[] args) throws Exception {
+		String trainFile = "zzz_logreg_preprocess_train/newtrain.txt";
+		String modelFile = "/home/bolei/Desktop/logreg-tmp-model.txt";
+		float c = 100;
+		int numFeatures = Hw6LogReg.NUM_FEATURES;
+		LogRegAdapter lr = new LogRegAdapter(numFeatures, 1E-1, 1E-4);
 
-		weightVector = lr.parseWeightVector(Arrays.toString(weightVector));
-		System.out.println(Arrays.toString(weightVector));
+		lr.train(trainFile, modelFile, c);
 	}
 }

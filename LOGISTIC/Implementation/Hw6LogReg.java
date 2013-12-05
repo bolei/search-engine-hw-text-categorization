@@ -3,7 +3,7 @@ package LOGISTIC.Implementation;
 import java.io.FileInputStream;
 import java.util.Properties;
 
-import SVM.Implementation.Hw6SVMDataPreprocessor;
+import edu.cmu.lti.searchengine.hw5.Hw6DataPreprocessor;
 import edu.cmu.lti.searchengine.hw5.MiscHelper;
 import edu.cmu.lti.searchengine.hw5.logreg.LogRegModel;
 
@@ -26,6 +26,7 @@ public class Hw6LogReg {
 		Properties prop = new Properties();
 		prop.load(new FileInputStream(configFile));
 
+		// load configuration for logistic regression
 		Properties prop2 = new Properties();
 		prop2.load(new FileInputStream(LOGREG_CONFIG_FILE));
 		prop.putAll(prop2);
@@ -37,16 +38,22 @@ public class Hw6LogReg {
 		// preprocess the raw train file, new train file goes to trainFile
 		MiscHelper.touchDir(PREPROCESS_TRAIN_FOLDER);
 		String trainFile = PREPROCESS_TRAIN_FOLDER + "/newtrain.txt";
-		Hw6SVMDataPreprocessor preprocessor = new Hw6SVMDataPreprocessor();
-		preprocessor.preprocess(rawTrainFile, trainFile, true, 0);
+		Hw6DataPreprocessor preprocessor = new Hw6DataPreprocessor();
+		preprocessor.preprocessTrain(rawTrainFile, trainFile, true, 0);
 
 		// preprocess test file, remove "qid:xxx"
 		MiscHelper.touchDir(PREPROCESS_TEST_FOLDER);
 		String testFile = PREPROCESS_TEST_FOLDER + "/newteset.txt";
-		preprocessor.cleanQid(rawTestFile, testFile);
+		preprocessor.preprocessTest(rawTestFile, testFile);
+
+		MiscHelper.touchDir(RESULT_FOLDER);
+		String resultFile = RESULT_FOLDER + "/logreg-result-" + c + ".txt";
+
+		// train and test
 
 		LogRegModel lrm = new LogRegModel(prop, NUM_FEATURES);
-		lrm.trainAndTest(c, trainFile, MODEL_FOLDER, testFile, RESULT_FOLDER);
+		lrm.trainAndTest(c, trainFile, MODEL_FOLDER, testFile, resultFile);
+		MiscHelper.catFile(resultFile);
 
 	}
 }

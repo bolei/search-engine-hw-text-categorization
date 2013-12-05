@@ -71,10 +71,8 @@ public class SvmAdapter extends AbstractOneVsRestClassifierAdapter {
 			BufferedReader br = null;
 			try {
 				br = new BufferedReader(isr);
-				String line = null;
-				while ((line = br.readLine()) != null) {
-					System.err.println(line);
-				}
+				while ((br.readLine()) != null)
+					; // do not output anything
 			} catch (IOException ioe) {
 				ioe.printStackTrace();
 			} finally {
